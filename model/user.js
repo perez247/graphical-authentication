@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 // const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 // const bcrypt = require('bcryptjs');
-const validator = require('validator');
+const validator = require('email-validator');
 
 const {utilis} = require('./helper');
 
@@ -15,19 +15,19 @@ var userSchema = new mongoose.Schema({
     },
     lineValues: {
         type:String,
+        required:true,
         trim:true,
         length:7,
     },
     recovery: {
         type:String,
-        maxlength:64,
-        set: utilis.hashPassword
+        required:true,
+        maxlength:64
     },
-    password:{
+    hPassword:{
         type:String,
         required:true,
-        minlength: 6,
-        set: utilis.hashPassword
+        maxlength: 64
     },
     tokens:[{
         access:{
@@ -41,9 +41,9 @@ var userSchema = new mongoose.Schema({
     }]
   });
 
-  userSchema.methods.toJSON = function(){
-    return _.pick(this.toObject(),['_id','email','name']);
-  }
+//   userSchema.methods.toJSON = function(){
+//     return _.pick(this.toObject(),['_id','email','name']);
+//   }
 
   userSchema.methods.generateAuthToken = function(){
     let user = this;
@@ -99,28 +99,36 @@ var userSchema = new mongoose.Schema({
 
 class User{
 
-    static model = mongoose.model('User',userSchema);
+    // static model = mongoose.model('User',userSchema);
 
-    static verifyEmail = (email)=>{
-        return new Promise((resolve,reject)=>{
-            if(validator.isEmail(email))
+    static verifyEmail(email){
+        return new Promise(function(resolve,reject){
+            if(validator.validate(email))
                 resolve(email);
             else
                 reject(`${email} is not an email`);
         })
     }
 
-    static uniqueEmail = (email)=>{
-        return new Promise((resolve,reject)=>{
-            return User.verifyEmail(email).then((email)=>{
-                if(!User.model.find({userId:email}))
-                    resolve(true);
-                else
-                    reject(`${email} has already been taking`);
-            })
+    static async uniqueEmail(email){
+        return new Promise(function(resolve,reject){
+            return User.verifyEmail(email).then(function(email){
+                return User.model.find({userId:email}).then(function(user){
+                    if(user.length>0)
+                        reject(`${email} has already been taking`);
+                    else
+                        resolve(true);
+                },function(e){
+                    reject(`bad request`);
+                })
+            }).catch(function(e){
+                reject(e);
+            });
         })
     }
 }
+
+User.model = mongoose.model('User',userSchema);
 
 module.exports = {
     User

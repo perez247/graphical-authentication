@@ -11,13 +11,12 @@
 					<form id="register-form-setup">
 						<div >
 							<div class="form-group col-sm-12">
-								<p class="stats-p"><span id="fUserIdStats"></span></p>
+								<p class="stats-p clearfix"><span id="fUserIdStats"></span></p>
 								<input type="email" class="form-control" placeholder="Email Address" name="userId" id="chkEmail" required>
-								<input type="hidden" name="create" value="create"/>
 							</div>
 							<br>
 							<div class="form-group col-sm-12">
-								<button class="btn btn-theme btn-block" type="submit" disabled="disabled" id="continue"><i class="fa fa-save"></i> SAVE AND CONTINUE</button>
+								<button class="btn btn-theme btn-block" type="submit" id="continue"><i class="fa fa-save"></i> SAVE AND CONTINUE</button>
 
 							</div>
 						</div>
@@ -87,17 +86,7 @@
 										<div class="col-md-4">
 											<div id="pic-div-tutorial">
 												<table id="graph-pwT">
-												<?php 
-								                    $cellVal = 1;
-								                    for ($row=1; $row <=5 ; $row++) { 
-								                        echo '<tr id="row-'.$row.'">';
-								                        for ($td=1; $td <=5 ; $td++) { 
-								                            echo '<td id="c'.$cellVal.'"><span id="c'.$cellVal.'l"></span>&nbsp;&nbsp;&nbsp;<span id="c'.$cellVal.'r"></span></td>';
-								                            $cellVal++;
-								                        }
-								                        echo '</tr>';
-								                    }
-								                ?>
+												
 												</table>
 											</div>
 										</div>

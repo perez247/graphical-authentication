@@ -4,84 +4,80 @@ $(document).ready(function() {
 	var recover;
 	// --------------------------------------------------
 
-	$("#register-form-setup").submit(function(event){
-	    /* Stop form from submitting normally */
-	    event.preventDefault();
-		var ajaxRequest;
+	// $("#register-form-setup").submit(function(event){
+	//     /* Stop form from submitting normally */
+	//     event.preventDefault();
+	// 	var ajaxRequest;
 
-		var userId = $('#chkEmail').val();
+	// 	var userId = $('#chkEmail').val();
 
-	    /* Get from elements values */
-	    var values = $(this).serialize();
-	       ajaxRequest= $.ajax({
-	            url: "http://localhost/school/include/func/createuser.php",
-	            type: "POST",
-	            data: values
-	        });
+	//     /* Get from elements values */
+	//     var values = $(this).serialize();
+	//        ajaxRequest= $.ajax({
+	//             url: "http://localhost/school/include/func/createuser.php",
+	//             type: "POST",
+	//             data: values
+	//         });
 
-	      /*  request cab be abort by ajaxRequest.abort() */
+	//       /*  request cab be abort by ajaxRequest.abort() */
 
-	     ajaxRequest.done(function (response, textStatus, jqXHR){
-	     	  var data = jQuery.parseJSON(response);
-	          if(data.stats==false){
-	          	$("#fStatus").hide().html("Error found in form : "+data.reason).fadeIn();
-	          	return;
-	          }
-	          else{
-	          	$("#sStatus").hide().html("Step Two: Create graphical password ").fadeIn(1000);
-	          	$("#stepone").slideUp();
-	          	$("#userId").val(userId);
-	          	$("#steptwo").delay(1000).slideDown();
-	          }
-	     });
+	//      ajaxRequest.done(function (response, textStatus, jqXHR){
+	//      	  var data = jQuery.parseJSON(response);
+	//           if(data.stats==false){
+	//           	$("#fStatus").hide().html("Error found in form : "+data.reason).fadeIn();
+	//           	return;
+	//           }
+	//           else{
+	//           	$("#sStatus").hide().html("Step Two: Create graphical password ").fadeIn(1000);
+	//           	$("#stepone").slideUp();
+	//           	$("#userId").val(userId);
+	//           	$("#steptwo").delay(1000).slideDown();
+	//           }
+	//      });
 
-	     /* On failure of request this function will be called  */
-	     ajaxRequest.fail(function (){
-	       // show error
-	       $("#result").html('There was ean rror on submit');
-	     });
-	});
+	//      /* On failure of request this function will be called  */
+	//      ajaxRequest.fail(function (){
+	//        // show error
+	//        $("#result").html('There was ean rror on submit');
+	//      });
+	// });
 
 // -----------------------------------------------------------
 
-	$("#chkEmail").keyup(function(){
-		if(!isEmail($(this).val())){
+	$("#register-form-setup").submit(function(){
+		event.preventDefault();
+		if(!isEmail($('#chkEmail').val())){
 			$("#fUserIdStats").removeClass("gt").addClass("bt").hide().delay(3000).html("Invalid user ID (email address)").fadeIn();
-			$(this).removeClass("good").addClass("error");
-			$('#continue').prop('disabled',true);
 			return;
         }else{
         	$("#fUserIdStats").fadeOut();
-           	$(this).removeClass("error").addClass("good");
-        }
-        ajaxRequest= $.ajax({
-	    	url: "/checkEmail",
-	        type: "post",
-	        data: 'email='+$(this).val()+'&chkEmail=chkEmail',
-	        // dataType: 'json',
-	        beforeSend: function(){
-	    		$("#fUserIdStats").removeClass("gt").removeClass("bt").html("checking if user ID exists").delay(3000);
-	    	},
+           	$("#chkEmail").removeClass("error").addClass("good");
+		}
+		let userId = $('#chkEmail').val();
 
-	    	// success: function(response){
-	    	// 	var value = jQuery.parseJSON(response);
-	    	// 	$("#fUserIdStats").removeClass("bt").addClass("gt").delay(3000).html(value.userId).fadeIn();
-	    	// }
+        ajaxRequest= $.ajax({
+	    	url: "/verifyEmail",
+	        type: "POST",
+			data: QueryStringToJSON('email='+$("#chkEmail").val()),
+			contentType:'application/json',
+	        beforeSend: function(){
+	    		$("#fUserIdStats").removeClass("gt").removeClass("bt").html("checking if user ID exists").delay(1000);
+	    	},
 	    });
 
         ajaxRequest.done(function (response, textStatus, jqXHR){
 			console.log(response);
-        	var data = jQuery.parseJSON(response);
-	        if(data.stats){
+	        if(response.stats){
+				$("#chkEmail").removeClass("error");
+	           	$("#sStatus").hide().html("Step Two: Create graphical password ").fadeIn(1000);
+	          	$("#stepone").slideUp();
+	          	$("#userId").val(userId);
+	          	$("#steptwo").delay(1000).slideDown();
+	           	return;
+	        }else{
 	        	$("#fUserIdStats").removeClass("gt").addClass("bt").delay(3000).html("user ID already exists (not available)").fadeIn();
 	        	$("#chkEmail").removeClass("good").addClass("error");
-	        	$('#continue').prop('disabled',true);
 				return;
-	        }else{
-	        	$("#fUserIdStats").removeClass("bt").addClass("gt").delay(3000).html("user ID available ").fadeIn();
-	           	$("#chkEmail").removeClass("error").addClass("good");
-	           	$('#continue').prop('disabled',false);
-	           	return;
 	        }
 	    });
 
@@ -128,37 +124,38 @@ $(document).ready(function() {
 		// }
 
 		var hP = sha256(picPass[2]+picPass[1]);
-		var rec = $.md5($('#chkPw').val());
+		var rec = sha256($('#chkPw').val());
 
 	    /* Get from elements values */
-	    var values = encodeURI("hPassword="+hP+"&userId="+$('#userId').val()+"&lineValues="+picPass[2]+"&recovery="+rec+"&complete=complete");
+	    var values = QueryStringToJSON(encodeURI("hPassword="+hP+"&userId="+$('#userId').val()+"&lineValues="+picPass[2]+"&recovery="+rec));
 
 	    /* Send the data using post and put the results in a div */
 	    /* I am not aborting previous request because It's an asynchronous request, meaning 
 	       Once it's sent it's out there. but in case you want to abort it  you can do it by  
 	       abort(). jQuery Ajax methods return an XMLHttpRequest object, so you can just use abort(). */
 	       ajaxRequest= $.ajax({
-	            url: "http://localhost/school/include/func/createuser.php",
+	            url: "/createuser",
 	            type: "POST",
-	            data: values
+				data: values,
+				contentType: 'application/json'
 	        });
 
 	      /*  request cab be abort by ajaxRequest.abort() */
 
 	     ajaxRequest.done(function (response, textStatus, jqXHR){
-	     	var data = jQuery.parseJSON(response);
-	          if(data.stats){
-	          	window.location.replace("http://localhost/school/login.php");
-	          	return;
-	          }
-	          else{
-	          	$("#fStatus").hide().html("Error found here"+data.reason).fadeIn();
-	          	return;
-	          }
+			  console.log(response);
+	        //   if(data.stats){
+	        //   	window.location.replace("http://localhost/school/login.php");
+	        //   	return;
+	        //   }
+	        //   else{
+	        //   	$("#fStatus").hide().html("Error found here"+data.reason).fadeIn();
+	        //   	return;
+	        //   }
 	     });
 
 	     /* On failure of request this function will be called  */
-	     ajaxRequest.fail(function (){
+	     ajaxRequest.fail(function (e){
 	       // show error
 	       $("#result").html('There was an error on submit');
 	     });
@@ -184,7 +181,7 @@ $(document).ready(function() {
 	}
 
 	$('#login-step1').ready(function(){
-		createGraphicalEnvironment()
+		createGraphicalEnvironment();
 		resetGridColors();
 		moveBoxH();
     	moveBoxV();
@@ -314,18 +311,15 @@ $("#recover-form-complete").submit(function(event){
 			$("#picPass").removeClass("good").addClass("error");
 			return;
         }
-		// else{
-		// 	$('#chkPw').val($.md5($('#chkPw').val()));
-		// }
 
 		var hP = sha256(picPass[2]+picPass[1]);
 		var rec = $.md5($('#chkPw').val());
 
 	    /* Get from elements values */
-	    var values = encodeURI("hPassword="+hP+"&userId="+$('#userId').val()+"&lineValues="+picPass[2]+"&recovery="+rec+"&recover=recover");
+	    var values = QueryStringToJSON(encodeURI("hPassword="+hP+"&userId="+$('#userId').val()+"&lineValues="+picPass[2]+"&recovery="+rec));
 
 	       ajaxRequest= $.ajax({
-	            url: "http://localhost/school/include/func/createuser.php",
+	            url: "/createuser",
 	            type: "POST",
 	            data: values
 	        });
@@ -333,24 +327,41 @@ $("#recover-form-complete").submit(function(event){
 	      /*  request cab be abort by ajaxRequest.abort() */
 
 	     ajaxRequest.done(function (response, textStatus, jqXHR){
-	     	var data = jQuery.parseJSON(response);
-	          if(data.stats){
-	          	window.location.replace("http://localhost/school/login.php");
-	          	$("#fStatus").hide().html(""+data.reason).fadeIn();
-	          	return;
-	          }
-	          else{
-	          	$("#fStatus").hide().html("Error found "+data.reason).fadeIn();
-	          	return;
-	          }
+			 console.log(response);
+	     	// var data = jQuery.parseJSON(response);
+	        //   if(data.stats){
+	        //   	window.location.replace("http://localhost/school/login.php");
+	        //   	$("#fStatus").hide().html(""+data.reason).fadeIn();
+	        //   	return;
+	        //   }
+	        //   else{
+	        //   	$("#fStatus").hide().html("Error found "+data.reason).fadeIn();
+	        //   	return;
+	        //   }
 	     });
 
 	     /* On failure of request this function will be called  */
 	     ajaxRequest.fail(function (){
+			console.log(response);			 
 	       // show error
-	       $("#result").html('There was an error on submit');
+	    //    $("#result").html('There was an error on submit');
 	     });
 	});
+
+	function QueryStringToJSON(string,parse=false) {            
+		var pairs = string.split('&');
+		
+		var result = {};
+		pairs.forEach(function(pair) {
+			pair = pair.split('=');
+			result[pair[0]] = decodeURIComponent(pair[1] || '');
+		});
+	
+		if(parse)
+			return JSON.parse(JSON.stringify(result));
+		else
+			return JSON.stringify(result);
+	}
 
 // ___________________________________Picture Codes
 
@@ -379,14 +390,30 @@ $("#recover-form-complete").submit(function(event){
 	function createGraphicalEnvironment(){
 		let table = jQuery('#graph-pw');
 		let cellValue = 1;
-		for (let row = 1; row <= 9; row++) {
-			let tr = jQuery('<tr id=row-'+row+'></tr>');
-			for (let rowtd = 1; rowtd <=13; rowtd++) {
-				let td ='<td id=c'+cellValue+'><span id="c'+cellValue+'l"></span>&nbsp;&nbsp;&nbsp;<span id="c'+cellValue+'r"></span></td>'
-				tr.append(td);
-				cellValue++;
+		if(table.length>0){ //If login table is loaded this function will execute
+			for (let row = 1; row <= 9; row++) {
+				let tr = jQuery('<tr id=row-'+row+'></tr>');
+				for (let rowtd = 1; rowtd <=13; rowtd++) {
+					let td ='<td id=c'+cellValue+'><span id="c'+cellValue+'l"></span>&nbsp;&nbsp;&nbsp;<span id="c'+cellValue+'r"></span></td>'
+					tr.append(td);
+					cellValue++;
+				}
+				table.append(tr);
 			}
-			table.append(tr);
+		}
+
+		table = jQuery('#graph-pwT');		
+		if(table.length>0){ //If registration table is loaded this function will execute instead
+			console.log(table.length);
+			for (let row = 1; row <= 5; row++) {
+				let tr = jQuery('<tr id=row-'+row+'></tr>');
+				for (let rowtd = 1; rowtd <=5; rowtd++) {
+					let td ='<td id=c'+cellValue+'><span id="c'+cellValue+'l"></span>&nbsp;&nbsp;&nbsp;<span id="c'+cellValue+'r"></span></td>'
+					tr.append(td);
+					cellValue++;
+				}
+				table.append(tr);
+			}
 		}
 	}	
 

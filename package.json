@@ -12,13 +12,14 @@
   "author": "Pere",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
+    "email-validator": "^1.1.1",
     "express": "^4.16.2",
     "hbs": "^4.0.1",
     "lodash": "^4.17.5",
     "mongodb": "^3.0.3",
     "mongoose": "^5.0.7",
-    "path": "^0.12.7",
-    "validator": "^9.4.1"
+    "path": "^0.12.7"
   }
 }

@@ -4,6 +4,7 @@ const express = require('express');
 const hbs = require('hbs');
 const path = require('path');
 const bodyParser = require('body-parser');
+const _ = require('lodash');
 
 const {mongoose} = require('./db/mongoose');
 const {User} = require('./model/user');
@@ -20,15 +21,29 @@ app.get('/login',(req,res)=>{
     res.render('login.hbs');
 });
 
-app.get('/verifyEmail',async (req,res)=>{
+app.get('/register',(req,res)=>{
+    res.render('register.hbs');
+});
+
+app.post('/verifyEmail',async (req,res)=>{
     try {
-        let stats = await User.uniqueEmail(req.email);
+        let stats = await User.uniqueEmail(req.body.email);
         res.send({stats});
-    } catch (error) {
+    } catch (e) {
         res.send({
-            stats: false,
-            reason: error
-        })
+            stats:false,
+            reason:e
+        });
+    }
+});
+
+app.post('/createuser', async (req,res)=>{
+    try {
+        let body = _.pick(req.body,['userId','lineValues','hPassword','recovery']);
+        let user = await new User.model(body).save();
+        res.send({user});      
+    } catch (error) {
+        res.send({error})
     }
 })
 

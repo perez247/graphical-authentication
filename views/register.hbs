@@ -1,0 +1,151 @@
+{{> header}}
+<div id="login-page">
+		<div class="container">
+
+			<div class="form-set">
+				<div class="col-sm-12 form-heading">
+					<h2 class="form-login-heading" id="sStatus" >Registration - Step 1</h2>
+				</div>
+				<div class="form-group col-sm-12 stats"><span id="fStatus"></span></div>
+				<div class="col-sm-12" id="stepone">
+					<form id="register-form-setup">
+						<div >
+							<div class="form-group col-sm-12">
+								<p class="stats-p"><span id="fUserIdStats"></span></p>
+								<input type="email" class="form-control" placeholder="Email Address" name="userId" id="chkEmail" required>
+								<input type="hidden" name="create" value="create"/>
+							</div>
+							<br>
+							<div class="form-group col-sm-12">
+								<button class="btn btn-theme btn-block" type="submit" disabled="disabled" id="continue"><i class="fa fa-save"></i> SAVE AND CONTINUE</button>
+
+							</div>
+						</div>
+
+					</form>	
+				</div>
+				<p id="checker"></p>
+				<div class="col-sm-12" id="steptwo">
+					<form id="register-form-complete">
+						<div>
+							<div class="form-group col-sm-12">
+								<p class="stats-p"><span id="sUserIdStats"></span></p>
+								<input type="text" class="form-control" name="userId" id="userId" readonly>
+							</div>
+							<div class="form-group col-sm-12" id="pic-pass-sec">
+
+
+								<div class="col-sm-12 form-heading">
+									<h4 class="form-login-heading" id="subStatus" >Step 1 : Choose coloured rows and coloumn</h4>
+								</div>
+								<div class="col-md-12 tuto-content">
+									<div class="col-md-12" id="choose-colors">
+										<div class="col-md-5 shield" >
+											<h5>Choose one coloured (row) horizontal line</h5>
+											<div class="col-xs-10 redr-line"></div><div class="col-xs-1"><input type="radio" name="hline" value="1"></div>
+											<div class="col-xs-10 bluer-line"></div><div class="col-xs-1"><input type="radio" name="hline" value="2"></div>
+											<div class="col-xs-10 greenr-line"></div><div class="col-xs-1"><input type="radio" name="hline" value="3"></div>
+											<div class="col-xs-10 whiter-line"></div><div class="col-xs-1"><input type="radio" name="hline" value="4"></div>
+										</div>
+										<div class="col-md-6 shield pull-right" >
+											<h5>Choose one coloured (column) Vertical line</h5>
+											<div class="col-xs-2">
+												<div class="col-xs-12"><input type="radio" name="vline" value="1"></div>
+												<div class="col-xs-12 redc-line"></div>
+											</div>
+											<div class="col-xs-2">
+												<div class="col-xs-12"><input type="radio" name="vline" value="2"></div>
+												<div class="col-xs-12 bluec-line"></div>
+											</div>
+											<div class="col-xs-2">
+												<div class="col-xs-12"><input type="radio" name="vline" value="3"></div>
+												<div class="col-xs-12 greenc-line"></div>
+											</div>
+											<div class="col-xs-2">
+												<div class="col-xs-12"><input type="radio" name="vline" value="4"></div>
+												<div class="col-xs-12 whitec-line"></div>
+											</div>
+											<div class="col-xs-2">
+												<div class="col-xs-12"><input type="radio" name="vline" value="5"></div>
+												<div class="col-xs-12 yellowc-line"></div>
+											</div>
+											<div class="col-xs-2">
+												<div class="col-xs-12"><input type="radio" name="vline" value="6"></div>
+												<div class="col-xs-12 brownc-line"></div>
+											</div>
+										</div>
+										<div class="col-md-12" ><p><span class="btn btn-theme btn-block" id="toSlides">Continue</span></p></div>
+									</div>
+									<div class="col-md-12" id="slide-number">
+										<div class="col-md-12" >
+											<h4 class="hr"><strong>
+												<span id="coord"></span>
+												<span id="color-lines"></span>
+												<span id="value-set"></span></strong>
+											</h4>
+										</div>
+										<div class="col-md-4">
+											<div id="pic-div-tutorial">
+												<table id="graph-pwT">
+												<?php 
+								                    $cellVal = 1;
+								                    for ($row=1; $row <=5 ; $row++) { 
+								                        echo '<tr id="row-'.$row.'">';
+								                        for ($td=1; $td <=5 ; $td++) { 
+								                            echo '<td id="c'.$cellVal.'"><span id="c'.$cellVal.'l"></span>&nbsp;&nbsp;&nbsp;<span id="c'.$cellVal.'r"></span></td>';
+								                            $cellVal++;
+								                        }
+								                        echo '</tr>';
+								                    }
+								                ?>
+												</table>
+											</div>
+										</div>
+										<div class="col-md-8">
+											<p class="hr"><strong>Insert values into your choosen cell by: </strong></p>
+											<div class="col-md-5 shield">
+												<p>Press, hold and move the mouse left or right within the grid to move all the right values of the grid left or right</p>
+												<div class="col-md-12">
+													<div class="move-h" id="box-h">
+														<div class="h-mouse-outer" id="h-outer">
+															<div class="h-mouse-inner"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6 shield">
+												<div class="col-md-4">
+													<div class="move-h" id="box-v">
+														<div class="h-mouse-outer" id="h-outer">
+															<div class="h-mouse-inner"></div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-8">
+													<p>Press, hold and move the mouse up or down within the grid to move all the left values of the up or down </p>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12" ><p><span class="btn btn-block btn-theme04" id="toColors">Go Back</span></p></div>
+
+										<div class="form-group col-sm-12">
+											<p class="stats-p"><span style="color:red;"></span><br><span id="textPassStats"></span></p>
+											<input type="password" class="form-control" placeholder="recovery password" maxlength="20" name="hPassword" id="chkPw" required>
+											<input type="hidden" name="complete" value="complete"/>
+										</div>
+										<div class="form-group col-sm-12">
+											<button class="btn btn-theme btn-block" type="submit"><i class="fa fa-save"></i> SAVE </button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-12">
+					<a class="btn btn-theme04 btn-block" href="login.php">Go back to login page</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    {{> footer}}

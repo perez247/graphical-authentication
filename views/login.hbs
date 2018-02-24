@@ -1,0 +1,66 @@
+{{> header}}
+<body>
+	  <div id="login-page">
+	  	<div class="container">
+	  	<div class="form-set">
+	  			<div class="col-sm-12 form-heading" id="loader">
+	  				<h2 class="form-login-heading" id="sStatus" >Login User Id and Graphical Password</h2>
+	  			</div>
+	  			<div class="form-group col-sm-12 space"><span id="fStatus"></span></div>
+	  			<div class="col-sm-12" id="stepone">
+	  				<form id="login-step1">
+
+					    <div >
+					        <div class="form-group col-sm-12">
+					            <p class="stats-p">* All fields are required &nbsp;<span id="fUserIdStats"></span></p> 
+					           	<input type="email" class="form-control" placeholder="Email Address" name="userId" id="userLogin" required>
+					        </div>
+					        <br>
+						</div>
+
+						<div class="form-group col-sm-12 text-center" id="pic-pass-sec">
+	  						<p>Input Graphical Password</p>
+                              <div class="mid-table col-md-8" id="pic-div">
+                                <table id="graph-pw"  align="center">
+                                </table>
+                            </div>
+						        <div class="col-md-4">
+						        	<div class="col-md-12 shield">
+								            		<p>Press, hold and move the mouse left or right within the grid to move all the right values of the grid left or right</p>
+								            		<div class="col-md-12">
+								            			<div class="move-h" id="box-h">
+									            			<div class="h-mouse-outer" id="h-outer">
+									            				<div class="h-mouse-inner"></div>
+									            			</div>
+									            		</div>
+								            		</div>
+								            	</div>
+								            	<div class="col-md-12 shield2">
+								            			<p>Press, hold and move the mouse up or down within the grid to move all the left values of the up or down </p>
+								            		<div class="col-md-12">
+								            			<div class="move-h" id="box-v">
+									            			<div class="h-mouse-outer" id="h-outer">
+									            				<div class="h-mouse-inner"></div>
+									            			</div>
+									            		</div>
+								            		</div>
+								            	</div>
+						        </div>
+						    </div>
+	  					<div class="form-group col-sm-12">
+					        <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-inbox"></i> LOGIN</button>
+					        <a class="btn btn-theme02 btn-block" href="recovery.php"><i class="fa fa-warning"></i> Please I have forgotten my graphical password</a>
+					    </div>
+				    </form>	
+	  			</div>
+
+	  			<div class="register">
+		                Don't have an account yet?<br/>
+		                <a class="" href="/newuser">
+		                    Create an account
+		                </a>
+		            </div>
+	  		</div>
+	  	</div>
+	  </div>
+      {{> footer}}

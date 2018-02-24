@@ -1,0 +1,12 @@
+{
+    "development":{
+        "PORT":3000,
+        "MONGODB_URI" : "mongodb://localhost:27017/GPassword",
+        "JWT_SECRET" : "io##duhnmoei89545la@@"
+    },
+    "test":{
+        "PORT":3000,
+        "MONGODB_URI" : "mongodb://localhost:27017/GPasswordTest",
+        "JWT_SECRET" : "@@fklfmoromrzd035ijntt!#"
+    }
+}

@@ -1,0 +1,231 @@
+.form-set{
+	width: 900px;
+	overflow: hidden;
+	background: #fff;
+	padding: 0;
+	margin: 50px auto;
+}
+
+.form-heading{
+	text-align: center;
+	background: #68DFF0;
+	color: #fff;
+}
+
+.btn-default{
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.pass-image{
+	width: 800px;
+	height: 400px;
+	background: #000;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.stats{
+	text-align: center;
+	color: red;
+	height: 5px;
+}
+
+.stats-p{
+	height: 5px;
+	padding: 0;
+}
+
+.register{
+	text-align: center;
+}
+
+.space{
+	height: 10px;
+	text-align: center;
+}
+
+.mid-table{
+	height: 360px;
+}
+
+#graph-pw, #graph-pwT{
+	border: 1px solid #000;
+	background-color: #b2b2b2;
+}
+
+#slide-number{
+	display: none;
+}
+
+#graph-pw{
+	max-height: 360px;
+	display: none;
+}
+
+#graph-pw td, #graph-pwT td{
+	height: 40px;
+	width: 40px;
+	text-align: center;
+	vertical-align: center;
+	color: #000;
+	font-weight: bolder;
+	padding-left: 4px;
+}
+
+.pLeft{
+	position: relative;
+	left:-6px;
+}
+
+.pRight{
+	position: relative;
+	left:6px;
+}
+
+
+.whitec{
+	background-color: #fff;
+	border-left: 2px solid #000;
+	border-right: 2px solid #000;
+}
+
+.yellowc{
+	background-color: yellow;
+	border-left: 2px solid yellow;
+	border-right: 2px solid yellow;
+}
+
+.redc{
+	background-color: red;
+	border-right: 1px solid red;
+	border-left: 1px solid red;
+}
+
+.greenc{
+	background-color: green;
+	border-left: 1px solid green;
+	border-right: 1px solid green;
+}
+
+.brownc{
+	background-color: brown;
+	border-left: 2px solid brown;
+	border-right: 2px solid brown;
+}
+
+.bluec{
+	background-color: blue;
+	border-left: 1px solid blue;
+	border-right: 1px solid blue;
+}
+
+.redr{
+	background-color: red;
+	border-top: 1px solid red;
+	border-bottom: 1px solid red;
+}
+
+.bluer{
+	background-color: blue;
+	border-top: 1px solid blue;
+	border-bottom: 1px solid blue;
+}
+
+.greenr{
+	background-color: green;
+	border-top: 1px solid green;
+	border-bottom: 1px solid green;
+}
+
+.whiter{
+	background-color: #fff;
+	border-top: 2px solid #000;
+	border-bottom: 2px solid #000;
+}
+
+/*.mid-table{
+	position: absolute;
+	top: 100px;
+	left: 50%1;
+	}*/
+
+.tuto-content{
+	min-height: 220px;
+}
+
+.redr-line, .bluer-line, .greenr-line, .whiter-line{
+	height: 20px;
+}
+
+.redc-line, .bluec-line, .greenc-line, .whitec-line, .yellowc-line, .brownc-line{
+	height: 80px;
+}
+
+.redr-line, .redc-line{
+	background-color: red;
+}
+
+.bluer-line, .bluec-line{
+	background-color: blue;
+}
+
+.greenr-line, .greenc-line{
+	background-color: green;
+}
+
+.whiter-line, .whitec-line{
+	background-color: #fff;
+	border: 2px solid #000;
+}
+
+.yellowc-line{
+	background-color: yellow;
+}
+
+.brownc-line{
+	background-color: brown;
+}
+
+.h-mouse-inner{
+	width: 20px;
+	height: 20px;
+	background-color: #000;
+	margin-left: 10px;
+	border-radius: 50%;
+}
+
+.h-mouse-outer{
+	width: 40px;
+	height: 40px;
+	background-color: blue;
+	padding-top: 10px;
+	border-radius: 50%;
+}
+
+.move-h{
+	position: relative;
+	width: 40px;
+	height: 40px;
+	top: 0px;
+	left: 0px;
+}
+
+.shield{
+	border: 1px solid #ccc;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.shield2{
+	border: 1px solid #ccc;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 5px;
+	height: 200px;
+}
+
+.hr{
+	border-bottom: 1px solid #222;
+}

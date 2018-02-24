@@ -1,0 +1,24 @@
+{
+  "name": "graphical_password",
+  "version": "1.0.0",
+  "description": "A graphical authentication using only html elements",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engine": {
+    "node": "9.4.0"
+  },
+  "author": "Pere",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "hbs": "^4.0.1",
+    "lodash": "^4.17.5",
+    "mongodb": "^3.0.3",
+    "mongoose": "^5.0.7",
+    "path": "^0.12.7",
+    "validator": "^9.4.1"
+  }
+}

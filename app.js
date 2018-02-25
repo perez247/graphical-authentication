@@ -8,6 +8,7 @@ const _ = require('lodash');
 
 const {mongoose} = require('./db/mongoose');
 const {User} = require('./model/user');
+const {Otp} = require('./model/otp');
 
 const publicPath = path.join(__dirname, './public');
 hbs.registerPartials(__dirname+'/views/partials');
@@ -41,10 +42,35 @@ app.post('/createuser', async (req,res)=>{
     try {
         let body = _.pick(req.body,['userId','lineValues','hPassword','recovery']);
         let user = await new User.model(body).save();
-        res.send({user});      
+        res.send({
+            user,
+            stats:true,
+        });      
     } catch (error) {
-        res.send({error})
+        res.send({reason:error.message})
     }
+});
+
+app.post('/getUser', async (req,res)=>{
+    try {
+        // console.log(req.body);
+        let user = await User.model.findOne({userId:req.body.email});
+        console.log(user.userId);
+        let otp = await new Otp.model({userId:user.userId}).save();
+        console.log(otp);
+        user.otp = otp.otp;
+        console.log(user);
+        res.send({
+            user,
+            stats:true,
+        }); 
+    } catch (e) {
+        res.send({reason:e});
+    }
+});
+
+app.post('/authenticate',(req,res)=>{
+
 })
 
 app.get('*',(req,res)=>{

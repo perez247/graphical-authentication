@@ -18,6 +18,10 @@ var userSchema = new mongoose.Schema({
         required:true,
         trim:true,
         length:7,
+        validate:{
+            validator:utilis.lineValue,
+            message: 'Invalid graphical password'
+        }
     },
     recovery: {
         type:String,
@@ -41,9 +45,9 @@ var userSchema = new mongoose.Schema({
     }]
   });
 
-//   userSchema.methods.toJSON = function(){
-//     return _.pick(this.toObject(),['_id','email','name']);
-//   }
+  userSchema.methods.toJSON = function(){
+    return _.pick(this.toObject(),['userId','lineValues']);
+  }
 
   userSchema.methods.generateAuthToken = function(){
     let user = this;

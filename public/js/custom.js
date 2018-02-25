@@ -119,9 +119,6 @@ $(document).ready(function() {
 			$("#picPass").removeClass("good").addClass("error");
 			return;
         }
-		// else{
-		// 	$('#chkPw').val($.md5($('#chkPw').val()));
-		// }
 
 		var hP = sha256(picPass[2]+picPass[1]);
 		var rec = sha256($('#chkPw').val());
@@ -143,15 +140,15 @@ $(document).ready(function() {
 	      /*  request cab be abort by ajaxRequest.abort() */
 
 	     ajaxRequest.done(function (response, textStatus, jqXHR){
-			  console.log(response);
-	        //   if(data.stats){
-	        //   	window.location.replace("http://localhost/school/login.php");
-	        //   	return;
-	        //   }
-	        //   else{
-	        //   	$("#fStatus").hide().html("Error found here"+data.reason).fadeIn();
-	        //   	return;
-	        //   }
+			 console.log(response);
+	          if(response.stats){
+	          	window.location.replace("/login");
+	          	return;
+	          }
+	          else{
+	          	$("#fStatus").hide().html("Error found here:<br/>"+response.reason).fadeIn();
+	          	return;
+	          }
 	     });
 
 	     /* On failure of request this function will be called  */
@@ -188,7 +185,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#login-step1").submit(function(event){
+	$("#login-step").submit(function(event){
 		/* Stop form from submitting normally */
 	    event.preventDefault();
 		var ajaxRequest;
@@ -204,20 +201,22 @@ $(document).ready(function() {
 	       Once it's sent it's out there. but in case you want to abort it  you can do it by  
 	       abort(). jQuery Ajax methods return an XMLHttpRequest object, so you can just use abort(). */
 	       ajaxRequest= $.ajax({
-	            url: "/verifyEmail",
-	            type: "GET",
-	           	data: 'email='+$("#userLogin").val()
+	            url: "/getUser",
+	            type: "POST",
+				data: QueryStringToJSON('email='+$("#userLogin").val()),
+				contentType:'application/json'
 	        });
 
 	      /*  request cab be abort by ajaxRequest.abort() */
 
 	     ajaxRequest.done(function (response, textStatus, jqXHR){
 			 console.log(response);
-	     	// var data = jQuery.parseJSON(response);
 	     	if(response.stats){
-	     		var pixs = checkPicPass(getUserInputWithCoord(response.lineValues));
+			 var pixs = checkPicPass(getUserInputWithCoord(response.user.lineValues));
+			 console.log(pixs);
 	     		if(pixs[0]){
-		       		authenticate_user(response, pixs);
+					console.log(response.user);
+					// authenticate_user(response.user, pixs);
 		       	}
 		       	else{
 		       		$('#fStatus').fadeIn().html('Invalid Graphical password').delay(5000).fadeOut();
@@ -239,7 +238,7 @@ $(document).ready(function() {
 	function authenticate_user(userData, picturePass){
 		var ajaxRequest;
 
-		var hP = $.md5(userData.otp,(sha256(picturePass[2]+picturePass[1])));
+		var hP = sha256(userData.otp,(sha256(picturePass[2]+picturePass[1])));
 
 	    ajaxRequest= $.ajax({
 	            url: "http://localhost/school/include/func/createuser.php",

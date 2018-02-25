@@ -210,12 +210,10 @@ $(document).ready(function() {
 	      /*  request cab be abort by ajaxRequest.abort() */
 
 	     ajaxRequest.done(function (response, textStatus, jqXHR){
-			 console.log(response);
 	     	if(response.stats){
-			 var pixs = checkPicPass(getUserInputWithCoord(response.user.lineValues));
-			 console.log(pixs);
+			 var pixs = checkPicPass(getUserInputWithCoord(response.lineValues));
 	     		if(pixs[0]){
-					console.log(response.user);
+					console.log(response);
 					// authenticate_user(response.user, pixs);
 		       	}
 		       	else{

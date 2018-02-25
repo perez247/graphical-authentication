@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 // const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 // const bcrypt = require('bcryptjs');
-const randomstring = require('randomstring');
+const {utilis} = require('./helper');
 
 var otpSchema = new mongoose.Schema({
     userId: {
@@ -13,7 +13,7 @@ var otpSchema = new mongoose.Schema({
     },
     otp: {
         type:String,
-        set:(v)=>{return 'randomstring.generate(10);'}
+        default:utilis.generateOtp(),
     }
   });
 

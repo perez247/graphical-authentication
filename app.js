@@ -55,13 +55,10 @@ app.post('/getUser', async (req,res)=>{
     try {
         // console.log(req.body);
         let user = await User.model.findOne({userId:req.body.email});
-        console.log(user.userId);
         let otp = await new Otp.model({userId:user.userId}).save();
-        console.log(otp);
-        user.otp = otp.otp;
-        console.log(user);
         res.send({
-            user,
+            lineValues:user['lineValues'],
+            otp:otp['otp'],
             stats:true,
         }); 
     } catch (e) {

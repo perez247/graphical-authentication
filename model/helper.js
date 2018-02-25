@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const randomstring = require('randomstring');
 
 let utilis = {
     hashPassword:(password)=>{
@@ -25,7 +26,9 @@ let utilis = {
         } catch (error) {
             return false;
         }
-    }
+    },
+
+    generateOtp:()=> randomstring.generate(),
 }
 
 module.exports = {utilis}

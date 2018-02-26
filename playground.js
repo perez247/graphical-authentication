@@ -1,4 +1,7 @@
 let {utilis} = require('./model/helper');
 const randomstring = require('randomstring');
 
-console.log(randomstring.generate());
+const sha256 = require('js-sha256');
+
+console.log(sha256.hmac('key','password'));
+console.log(sha256.hmac('key','password'));

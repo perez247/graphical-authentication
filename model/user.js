@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 // const bcrypt = require('bcryptjs');
 const validator = require('email-validator');
+const sha256 = require('js-sha256');
 
 const {utilis} = require('./helper');
+const {Otp} = require('./otp');
 
 var userSchema = new mongoose.Schema({
     userId: {
@@ -32,27 +34,27 @@ var userSchema = new mongoose.Schema({
         type:String,
         required:true,
         maxlength: 64
-    },
-    tokens:[{
-        access:{
-            type:String,
-            required:true
-        },
-        token:{
-            type:String,
-            required:true            
-        }
-    }]
+    }
+    // tokens:[{
+    //     access:{
+    //         type:String,
+    //         required:true
+    //     },
+    //     token:{
+    //         type:String,
+    //         required:true            
+    //     }
+    // }]
   });
 
   userSchema.methods.toJSON = function(){
     return _.pick(this.toObject(),['userId','lineValues']);
   }
 
-  userSchema.methods.generateAuthToken = function(){
+  userSchema.methods.generateOtp = function(){
     let user = this;
-    let access = "auth";
-    let token = jwt.sign({_id:user._id.toHexString(),access},process.env.JWT_SECRET).toString();
+    let access = "otp";
+    let token = utilis.generateOtp();
     // user.tokens = [];
     user.tokens.push({access,token});
     return user.save().then(()=>{
@@ -60,14 +62,37 @@ var userSchema = new mongoose.Schema({
     });
   }
 
-  userSchema.methods.removeToken = function(token){
+  userSchema.methods.removeOtps = function(access="otp"){
     let user = this;
-
-    return user.update({
-        $pull:{
-            tokens:{token}
-        }
+    console.log(user);
+    Otp.model.remove({
+        userId:user['userId']
+    }).then((r)=>{
+        console.log(r)
+    }).catch((e)=>{
+        console.log(e);
     })
+ //   return user.re
+    // User.model.remove(user.toObject());
+    // console.log(user);
+    
+  }
+
+  userSchema.methods.checkOtpPassword = function(data){
+      return new Promise((resolve,reject)=>{
+        let user = this;
+        let hPassword = sha256.hmac(data.otp,user.hPassword);
+        console.log(hPassword);
+        // console.log(data.hPassword);
+        if(hPassword===data.hPassword){
+            user.removeOtps();
+            return resolve(true);
+        }
+        else{
+            user.removeOtps();
+            return reject('Invalid username/password')            
+        }
+      })
   }
 
   userSchema.statics.findByToken = function(token){

@@ -28,7 +28,7 @@ let utilis = {
         }
     },
 
-    generateOtp:()=> randomstring.generate(),
+    generateOtp:()=> randomstring.generate(5),
 }
 
 module.exports = {utilis}

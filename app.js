@@ -55,10 +55,11 @@ app.post('/getUser', async (req,res)=>{
     try {
         // console.log(req.body);
         let user = await User.model.findOne({userId:req.body.email});
+        // otp = await user.generateOtp();
         let otp = await new Otp.model({userId:user.userId}).save();
-        res.send({
+        return res.send({
             lineValues:user['lineValues'],
-            otp:otp['otp'],
+            otp:otp.otp,
             stats:true,
         }); 
     } catch (e) {
@@ -66,9 +67,36 @@ app.post('/getUser', async (req,res)=>{
     }
 });
 
-app.post('/authenticate',(req,res)=>{
+app.post('/authenticate',async (req,res)=>{
+    try {
+        // console.log(req.body);        
+        let user = await User.model.findOne({
+            'userId':req.body.userId
+        });
 
+        if(user){
+            let stats = await user.checkOtpPassword(req.body);
+
+            return res.send({stats});
+        }
+        throw Error('Invalid username/password');
+    } catch (error) {
+        return res.send({
+            error,
+            stats:false
+        })
+    }
+    //find user
+    //check otp
+    //check password
+    res.send({
+        data:req.body
+    })
 })
+
+app.get('/private',(req,res)=>{
+    res.render('private.hbs');
+});
 
 app.get('*',(req,res)=>{
     res.send({e:'page not found'});

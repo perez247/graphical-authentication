@@ -195,15 +195,15 @@ $(document).ready(function() {
 			$("#userLogin").removeClass("good").addClass("error");
 			return;
         }
-
+		let userId = $("#userLogin").val();
 	    /* Send the data using post and put the results in a div */
 	    /* I am not aborting previous request because It's an asynchronous request, meaning 
 	       Once it's sent it's out there. but in case you want to abort it  you can do it by  
-	       abort(). jQuery Ajax methods return an XMLHttpRequest object, so you can just use abort(). */
+		   abort(). jQuery Ajax methods return an XMLHttpRequest object, so you can just use abort(). */
 	       ajaxRequest= $.ajax({
 	            url: "/getUser",
 	            type: "POST",
-				data: QueryStringToJSON('email='+$("#userLogin").val()),
+				data: QueryStringToJSON('email='+userId),
 				contentType:'application/json'
 	        });
 
@@ -213,8 +213,8 @@ $(document).ready(function() {
 	     	if(response.stats){
 			 var pixs = checkPicPass(getUserInputWithCoord(response.lineValues));
 	     		if(pixs[0]){
-					console.log(response);
-					// authenticate_user(response.user, pixs);
+					response.userId = userId;
+					authenticate_user(response, pixs);
 		       	}
 		       	else{
 		       		$('#fStatus').fadeIn().html('Invalid Graphical password').delay(5000).fadeOut();
@@ -236,24 +236,24 @@ $(document).ready(function() {
 	function authenticate_user(userData, picturePass){
 		var ajaxRequest;
 
-		var hP = sha256(userData.otp,(sha256(picturePass[2]+picturePass[1])));
-
+		// sha256.hmac('key', 'Message to hash');
+		var hP = sha256.hmac(userData.otp,(sha256(picturePass[2]+picturePass[1])));
 	    ajaxRequest= $.ajax({
-	            url: "http://localhost/school/include/func/createuser.php",
-	            type: "POST",
-	           	data: 'userId='+userData.userId+'&otp='+userData.otp+'&hPassword='+hP+'&authenticate=authenticate'
+	            url: "/authenticate",
+				type: "POST",
+				contentType:'application/json',
+	           	data: QueryStringToJSON('userId='+userData.userId+'&otp='+userData.otp+'&hPassword='+hP)
 	        });
 
 	      /*  request cab be abort by ajaxRequest.abort() */
 
 	     ajaxRequest.done(function (response, textStatus, jqXHR){
-	     	var data = jQuery.parseJSON(response);
-	     	if(data.stats){
-	     		window.location.replace("http://localhost/school/private/");
+	     	if(response.stats){
+	     		window.location.replace("/private");
 	          	return;
 	     	}
 	     	else{
-	     		$('#fStatus').fadeIn().html(data.reason).delay(5000).fadeOut();
+	     		$('#fStatus').fadeIn().html(response.reason).delay(5000).fadeOut();
 	     	}
 	     });
 
